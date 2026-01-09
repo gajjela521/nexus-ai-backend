@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: nexus-ai-backend
+    runtime: docker
+    repo: https://github.com/gajjela521/nexus-ai-backend
+    plan: free
+    envVars:
+      - key: PORT
+        value: 10000
