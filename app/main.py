@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
+from asgi_correlation_id import CorrelationIdMiddleware
 
 from app.core.config import settings
 from app.api.v1.router import api_router
@@ -14,6 +15,9 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     description="AI-Powered Career Intelligence Backend (Enterprise Edition)"
 )
+
+# Enterprise Middleware: Request ID Tracing
+app.add_middleware(CorrelationIdMiddleware)
 
 # Register Limiter
 app.state.limiter = limiter
