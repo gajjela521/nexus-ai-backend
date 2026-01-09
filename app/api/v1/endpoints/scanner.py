@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from typing import List
 from app.services.analyzer_service import analyze_match
@@ -15,7 +15,7 @@ class MatchResponse(BaseModel):
     match_level: str
 
 @router.post("/match", response_model=MatchResponse)
-async def match_resume(payload: MatchRequest):
+async def match_resume(request: Request, payload: MatchRequest):
     """
     Analyze the match between a resume text and a job description.
     """
