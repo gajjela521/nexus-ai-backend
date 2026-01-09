@@ -92,8 +92,26 @@ class RAGService:
             )
             answer = chain.run(query_text)
         else:
-            # Fallback for Demo without API Key
-            answer = f"**[Simulated LLM Response]**\nBased on the analysis, here are the relevant points found in the database:\n\n{context_text}\n\n*(To get real GPT-4 generation, provide an API Key in the request or set env var)*"
+            # Smart Fallback: Local Semantic Extraction
+            # We don't have GPT, but we have the relevant 'docs' from FAISS.
+            # We will perform a basic summarization or extraction here.
+            
+            # Simple heuristic: Just extract the first sentence of each retrieved doc
+            # to simulate an "answer" derived from the db.
+            extracted_points = []
+            for d in docs:
+                # Naive first sentence extractor
+                sentence = d.page_content.split('.')[0] + "."
+                extracted_points.append(f"- {sentence}")
+            
+            bullet_points = "\n".join(extracted_points)
+            
+            answer = (
+                f"**[Nexus Basic AI]**\n"
+                f"I found {len(docs)} relevant data points in your job database:\n\n"
+                f"{bullet_points}\n\n"
+                f"*(Note: Use a Pro Key to get full GPT-4 synthesis)*"
+            )
 
         return {
             "query": query_text,
