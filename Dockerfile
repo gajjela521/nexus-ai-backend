@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 # Install PyTorch CPU first to reduce image size and ensure compatibility
 RUN pip install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cpu
+# Manually install sentence-transformers to resolve import error
+RUN pip install --no-cache-dir sentence-transformers==2.2.2
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
